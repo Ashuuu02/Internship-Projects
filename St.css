@@ -1,0 +1,592 @@
+/* src/App.css */
+:root {
+  --primary: #4361ee;
+  --primary-dark: #3a56d4;
+  --secondary: #7209b7;
+  --success: #4cc9f0;
+  --danger: #f72585;
+  --warning: #fca311;
+  --light: #f8f9fa;
+  --dark: #212529;
+  --gray: #6c757d;
+  --light-gray: #e9ecef;
+  --border-radius: 10px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  box-shadow: var(--box-shadow);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo i {
+  font-size: 2rem;
+}
+
+.student-selector select {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-weight: 500;
+}
+
+.student-selector select option {
+  background: white;
+  color: var(--dark);
+}
+
+/* Navigation Styles */
+.navigation {
+  display: flex;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 2rem;
+}
+
+.navigation button {
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--gray);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navigation button:hover {
+  color: var(--primary);
+}
+
+.navigation button.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.navigation button.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary);
+}
+
+/* Main Content Styles */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Dashboard Styles */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.welcome-banner {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.welcome-banner h2 {
+  margin-bottom: 1rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card h3 {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.action-button {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.action-button.primary {
+  background: var(--primary);
+  color: white;
+}
+
+.action-button.primary:hover {
+  background: var(--primary-dark);
+}
+
+.action-button.secondary {
+  background: white;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.action-button.secondary:hover {
+  background: var(--light);
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.upcoming-appointments {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+}
+
+.upcoming-appointments h3 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.appointment-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--light);
+  border-radius: var(--border-radius);
+}
+
+.appointment-info h4 {
+  margin-bottom: 0.25rem;
+}
+
+.cancel-btn {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #d40a6a;
+}
+
+/* Teachers View Styles */
+.teachers-view h2 {
+  margin-bottom: 1.5rem;
+}
+
+.teachers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.teacher-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.teacher-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-avatar {
+  width: 70px;
+  height: 70px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 auto 1rem;
+}
+
+.teacher-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.slots-count {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: var(--light);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+}
+
+.teacher-detail .back-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.teacher-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.teacher-header .teacher-avatar {
+  margin: 0;
+}
+
+.slots-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.slot-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.slot-card.available {
+  border-left: 4px solid var(--success);
+}
+
+.slot-card.booked {
+  border-left: 4px solid var(--danger);
+}
+
+.slot-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status.available {
+  background: rgba(76, 201, 240, 0.2);
+  color: var(--success);
+}
+
+.status.booked {
+  background: rgba(247, 37, 133, 0.2);
+  color: var(--danger);
+}
+
+.book-btn {
+  background: var(--success);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.book-btn:hover {
+  background: #3bb1d5;
+}
+
+.book-btn:disabled {
+  background: var(--gray);
+  cursor: not-allowed;
+}
+
+/* Bookings View Styles */
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--box-shadow);
+}
+
+.booking-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.booking-info .teacher-avatar {
+  margin: 0;
+}
+
+.appointment-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  color: var(--gray);
+}
+
+.no-bookings, .select-student {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+}
+
+.no-bookings i, .select-student i {
+  font-size: 3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+/* Help View Styles */
+.help-view {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--box-shadow);
+}
+
+.faq-section, .support-section {
+  margin-bottom: 2rem;
+}
+
+.faq-section h3, .support-section h3 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.faq-item {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item h4 {
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+
+.faq-item p {
+  margin-bottom: 0.5rem;
+}
+
+.support-section p {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Footer Styles */
+.footer {
+  background: var(--dark);
+  color: white;
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.footer-links {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  color: var(--light);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Notification Styles */
+.notification {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+}
+
+.notification.success {
+  background: var(--success);
+  color: white;
+}
+
+.notification.error {
+  background: var(--danger);
+  color: white;
+}
+
+.notification.info {
+  background: var(--warning);
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .navigation {
+    overflow-x: auto;
+    padding: 0;
+  }
+  
+  .navigation button {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .main-content {
+    padding: 1rem;
+  }
+  
+  .booking-card, .appointment-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .action-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
