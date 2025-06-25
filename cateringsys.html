@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card { margin-bottom: 20px; }
+        .section { display: none; }
+        .active-section { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <header class="bg-primary text-white p-3 mb-4 rounded text-center">
+            <h1>Catering Management System</h1>
+        </header>
+
+        <!-- Main Navigation -->
+        <nav class="d-flex justify-content-center mb-4">
+            <button class="btn btn-outline-primary mx-2 nav-btn" data-target="main-menu">Main Menu</button>
+            <button class="btn btn-outline-primary mx-2 nav-btn" data-target="reservations">Reservations</button>
+            <button class="btn btn-outline-primary mx-2 nav-btn" data-target="orders">Orders</button>
+        </nav>
+
+        <!-- Main Menu Section -->
+        <section id="main-menu" class="section active-section">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h2>Menu Items</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="menu-items">
+                                <!-- Menu items will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reservations Section -->
+        <section id="reservations" class="section">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h2>Create Reservation</h2>
+                </div>
+                <div class="card-body">
+                    <form id="reservation-form">
+                        <div class="mb-3">
+                            <label class="form-label">Event Name</label>
+                            <input type="text" class="form-control" id="event-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-control" id="event-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Number of Guests</label>
+                            <input type="number" class="form-control" id="guests" min="1" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Reservation</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h2>Existing Reservations</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Guests</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reservations-list">
+                                <!-- Reservations will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="section">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h2>Create Order</h2>
+                </div>
+                <div class="card-body">
+                    <form id="order-form">
+                        <div class="mb-3">
+                            <label class="form-label">Reservation ID</label>
+                            <select class="form-select" id="reservation-id" required></select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h5>Select Menu Items</h5>
+                            <div id="menu-selection">
+                                <!-- Menu items will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h2>Order History</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-list">
+                                <!-- Orders will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        class CateringSystem {
+            constructor() {
+                this.menu = {
+                    "APP01": { name: "Spring Rolls", price: 5.99 },
+                    "MAIN01": { name: "Chicken Curry", price: 12.99 },
+                    "DES01": { name: "Chocolate Cake", price: 6.50 }
+                };
+                this.reservations = {};
+                this.orders = {};
+                this.orderCounter = 1;
+                this.reservationCounter = 1;
+            }
+
+            createReservation(eventName, date, guests) {
+                const resId = `RES${this.reservationCounter.toString().padStart(3, '0')}`;
+                this.reservations[resId] = {
+                    name: eventName,
+                    date: date,
+                    guests: guests,
+                    orderId: null
+                };
+                this.reservationCounter++;
+                return resId;
+            }
+
+            placeOrder(resId, items) {
+                if (!this.reservations[resId]) return null;
+                
+                let total = 0;
+                const orderItems = {};
+                
+                for (const [code, quantity] of Object.entries(items)) {
+                    if (this.menu[code] && quantity > 0) {
+                        orderItems[code] = quantity;
+                        total += this.menu[code].price * quantity;
+                    }
+                }
+                
+                if (Object.keys(orderItems).length === 0) return null;
+                
+                const orderId = this.orderCounter;
+                this.orders[orderId] = {
+                    resId: resId,
+                    items: orderItems,
+                    total: total
+                };
+                
+                this.reservations[resId].orderId = orderId;
+                this.orderCounter++;
+                return orderId;
+            }
+        }
+
+        // UI Controller
+        document.addEventListener('DOMContentLoaded', () => {
+            const cateringSystem = new CateringSystem();
+            
+            // Navigation
+            document.querySelectorAll('.nav-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.getAttribute('data-target');
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.classList.remove('active-section');
+                    });
+                    document.getElementById(target).classList.add('active-section');
+                });
+            });
+            
+            // Initialize menu display
+            renderMenu();
+            
+            // Reservation form
+            document.getElementById('reservation-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const eventName = document.getElementById('event-name').value;
+                const date = document.getElementById('event-date').value;
+                const guests = parseInt(document.getElementById('guests').value);
+                
+                const resId = cateringSystem.createReservation(eventName, date, guests);
+                alert(`Reservation created! ID: ${resId}`);
+                renderReservations();
+                document.getElementById('reservation-form').reset();
+            });
+            
+            // Order form
+            document.getElementById('order-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const resId = document.getElementById('reservation-id').value;
+                const items = {};
+                
+                document.querySelectorAll('.menu-item-quantity').forEach(input => {
+                    const code = input.dataset.code;
+                    const quantity = parseInt(input.value);
+                    if (quantity > 0) {
+                        items[code] = quantity;
+                    }
+                });
+                
+                const orderId = cateringSystem.placeOrder(resId, items);
+                if (orderId) {
+                    alert(`Order placed! Order ID: ${orderId}`);
+                    renderOrders();
+                } else {
+                    alert('Failed to place order. Please check your selection.');
+                }
+            });
+            
+            function renderMenu() {
+                const menuContainer = document.getElementById('menu-items');
+                menuContainer.innerHTML = '';
+                
+                for (const [code, item] of Object.entries(cateringSystem.menu)) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${code}</td>
+                        <td>${item.name}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                    `;
+                    menuContainer.appendChild(row);
+                }
+            }
+            
+            function renderReservations() {
+                const reservationsList = document.getElementById('reservations-list');
+                reservationsList.innerHTML = '';
+                
+                for (const [resId, reservation] of Object.entries(cateringSystem.reservations)) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${resId}</td>
+                        <td>${reservation.name}</td>
+                        <td>${reservation.date}</td>
+                        <td>${reservation.guests}</td>
+                    `;
+                    reservationsList.appendChild(row);
+                }
+                
+                // Update reservation dropdown in order form
+                const reservationSelect = document.getElementById('reservation-id');
+                reservationSelect.innerHTML = '';
+                
+                for (const resId in cateringSystem.reservations) {
+                    const option = document.createElement('option');
+                    option.value = resId;
+                    option.textContent = `${resId} - ${cateringSystem.reservations[resId].name}`;
+                    reservationSelect.appendChild(option);
+                }
+            }
+            
+            function renderMenuSelection() {
+                const menuContainer = document.getElementById('menu-selection');
+                menuContainer.innerHTML = '';
+                
+                for (const [code, item] of Object.entries(cateringSystem.menu)) {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'd-flex align-items-center mb-2';
+                    itemDiv.innerHTML = `
+                        <div class="form-check me-2">
+                            <input class="form-check-input" type="checkbox" id="item-${code}">
+                        </div>
+                        <label class="form-check-label me-3" for="item-${code}">
+                            ${item.name} ($${item.price.toFixed(2)})
+                        </label>
+                        <input type="number" min="0" value="0" 
+                               class="form-control menu-item-quantity" 
+                               style="width: 80px;" 
+                               data-code="${code}">
+                    `;
+                    menuContainer.appendChild(itemDiv);
+                }
+            }
+            
+            function renderOrders() {
+                const ordersList = document.getElementById('orders-list');
+                ordersList.innerHTML = '';
+                
+                for (const [orderId, order] of Object.entries(cateringSystem.orders)) {
+                    const reservation = cateringSystem.reservations[order.resId];
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${orderId}</td>
+                        <td>${reservation.name}</td>
+                        <td>${reservation.date}</td>
+                        <td>$${order.total.toFixed(2)}</td>
+                    `;
+                    ordersList.appendChild(row);
+                }
+            }
+            
+            // Initial renders
+            renderReservations();
+            renderMenuSelection();
+        });
+    </script>
+</body>
+</html>
